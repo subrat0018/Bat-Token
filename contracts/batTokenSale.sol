@@ -9,6 +9,7 @@ pragma solidity ^0.8.1;
 import "./batToken.sol";
 contract BatTokenSale
 {
+    //Variables
     address owner;
     uint public tokenPrice;
     BatToken public tokenContract;
@@ -17,6 +18,7 @@ contract BatTokenSale
     //Events
     event Sell(address _buyer,uint _amount);
 
+    //Functions
     constructor(uint _tokenPrice,BatToken _tokenContract)
     {
         owner = msg.sender;
@@ -31,7 +33,7 @@ contract BatTokenSale
     {
         require(msg.sender == owner,"You are not Authorized to do this");
         require(tokenContract.transfer(msg.sender, tokenContract.balanceOf(address(this))),"Transfermation failed");
-        selfdestruct(payable(owner));
+        payable(owner).transfer(address(this).balance);
     }
     function buyToken(uint _numberOfTokens) public payable
     {
